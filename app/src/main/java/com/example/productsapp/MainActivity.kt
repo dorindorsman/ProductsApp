@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.productsapp.ui.navigation.NavGraph
 import com.example.productsapp.ui.theme.ProductsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProductsAppTheme {
-                // Navigation will go here
+                NavGraph()
             }
         }
     }
