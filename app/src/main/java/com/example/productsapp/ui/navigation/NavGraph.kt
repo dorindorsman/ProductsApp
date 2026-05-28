@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.productsapp.ui.auth.LoginScreen
+import com.example.productsapp.ui.products.ProductListScreen
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
@@ -37,7 +38,11 @@ fun NavGraph(
         }
 
         composable(Screen.Products.route) {
-            // ProductListScreen — coming soon
+            ProductListScreen(
+                onProductClick = { productId ->
+                    navController.navigate(Screen.ProductDetail.createRoute(productId))
+                }
+            )
         }
 
         composable(Screen.Favorites.route) {
