@@ -2,10 +2,13 @@ package com.example.productsapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.productsapp.ui.auth.LoginScreen
+import com.example.productsapp.ui.products.ProductDetailScreen
 import com.example.productsapp.ui.products.ProductListScreen
 
 sealed class Screen(val route: String) {
@@ -42,6 +45,18 @@ fun NavGraph(
                 onProductClick = { productId ->
                     navController.navigate(Screen.ProductDetail.createRoute(productId))
                 }
+            )
+        }
+
+        composable(
+            route = Screen.ProductDetail.route,
+            arguments = listOf(navArgument("productId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
+            ProductDetailScreen(
+                productId = productId,
+                onBack = { navController.popBackStack() },
+                onDeleted = { navController.popBackStack() }
             )
         }
 
