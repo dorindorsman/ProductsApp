@@ -120,7 +120,6 @@ app/
 - Quick reference for Paging 3 `RemoteMediator` API signature
 - Providing String resource templates for Hebrew\English localization and Implementing them in the app
 - Help to draft the README structure and content outline
-- Helping to identify bugs by providing partial code snippets for error reproduction and debugging
 
 ### What Was Implemented and Reviewed Manually
 - Overall architecture design — the decision to use MVVM + Clean Architecture with feature-based packaging
@@ -130,7 +129,6 @@ app/
 - Biometric authentication integration and `FragmentActivity` migration
 - Dark mode and language switching implementation
 - All bug fixes throughout development
-- Hebrew string resources and localization
 - Splash screen and session persistence logic
 - Full code review of any AI-generated snippets before integration
 
