@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.productsapp.R
 import com.example.productsapp.domain.model.Product
 
 @Composable
@@ -32,8 +34,7 @@ fun ProductCard(
             AsyncImage(
                 model = product.thumbnail,
                 contentDescription = product.title,
-                modifier = Modifier
-                    .size(80.dp),
+                modifier = Modifier.size(80.dp),
                 contentScale = ContentScale.Crop
             )
 
@@ -64,8 +65,7 @@ fun ProductCard(
                 Icon(
                     imageVector = if (product.isFavorite)
                         Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = if (product.isFavorite)
-                        "Remove from favorites" else "Add to favorites",
+                    contentDescription = stringResource(R.string.toggle_favorite),
                     tint = if (product.isFavorite)
                         MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )

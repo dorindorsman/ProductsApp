@@ -17,8 +17,10 @@ import com.example.productsapp.ui.favorites.FavoritesScreen
 import com.example.productsapp.ui.products.ProductDetailScreen
 import com.example.productsapp.ui.products.ProductListScreen
 import com.example.productsapp.ui.settings.SettingsScreen
+import com.example.productsapp.ui.splash.SplashScreen
 
 sealed class Screen(val route: String) {
+    object Splash : Screen("splash")
     object Login : Screen("login")
     object Products : Screen("products")
     object ProductDetail : Screen("product/{productId}") {
@@ -37,7 +39,7 @@ val screensWithBottomBar = listOf(
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Login.route
+    startDestination: String = Screen.Splash.route
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -55,6 +57,21 @@ fun NavGraph(
             startDestination = startDestination,
             modifier = Modifier.padding(padding)
         ) {
+            composable(Screen.Splash.route) {
+                SplashScreen(
+                    onLoggedIn = {
+                        navController.navigate(Screen.Products.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    },
+                    onNotLoggedIn = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
             composable(Screen.Login.route) {
                 LoginScreen(
                     onLoginSuccess = {

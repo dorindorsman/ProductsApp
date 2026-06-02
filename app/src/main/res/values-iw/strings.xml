@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">אפליקציית מוצרים</string>
+
+    <!-- Auth -->
+    <string name="sign_in">התחברות</string>
+    <string name="sign_in_to_continue">התחבר כדי להמשיך</string>
+    <string name="username">שם משתמש</string>
+    <string name="password">סיסמא</string>
+    <string name="show_password">הצג סיסמא</string>
+    <string name="hide_password">הסתר סיסמא</string>
+    <string name="login_with_biometric">כניסה ביומטרית</string>
+    <string name="demo_credentials">פרטי כניסה: user / password123</string>
+    <string name="please_fill_all_fields">נא למלא את כל השדות</string>
+    <string name="invalid_credentials">שם משתמש או סיסמא שגויים</string>
+
+    <!-- Products -->
+    <string name="products">מוצרים</string>
+    <string name="search_products">חיפוש מוצרים…</string>
+    <string name="sort">מיון</string>
+    <string name="filter">סינון</string>
+    <string name="all">הכל</string>
+    <string name="add_product">הוסף מוצר</string>
+    <string name="reset_local_changes">איפוס שינויים מקומיים</string>
+    <string name="reset_changes">איפוס שינויים</string>
+    <string name="reset_changes_message">פעולה זו תמחק את כל השינויים המקומיים ותטען מחדש מה-API. להמשיך?</string>
+    <string name="reset">איפוס</string>
+    <string name="cancel">ביטול</string>
+    <string name="retry">נסה שוב</string>
+    <string name="something_went_wrong">משהו השתבש</string>
+    <string name="sort_default">ברירת מחדל</string>
+    <string name="sort_price_asc">מחיר: מהנמוך לגבוה</string>
+    <string name="sort_price_desc">מחיר: מהגבוה לנמוך</string>
+    <string name="sort_rating">מדורג גבוה</string>
+    <string name="sort_title">שם א-ת</string>
+    <string name="locally_modified">שונה מקומית</string>
+
+    <!-- Product Detail -->
+    <string name="product_details">פרטי מוצר</string>
+    <string name="brand">מותג: %s</string>
+    <string name="stock">במלאי: %d יחידות</string>
+    <string name="description">תיאור</string>
+    <string name="edit">עריכה</string>
+    <string name="delete">מחיקה</string>
+    <string name="delete_product">מחיקת מוצר</string>
+    <string name="delete_product_message">האם אתה בטוח שברצונך למחוק את המוצר?</string>
+    <string name="toggle_favorite">הוסף/הסר ממועדפים</string>
+    <string name="back">חזרה</string>
+
+    <!-- Add/Edit Dialog -->
+    <string name="add_product_title">הוסף מוצר</string>
+    <string name="edit_product_title">עריכת מוצר</string>
+    <string name="title">כותרת</string>
+    <string name="price">מחיר</string>
+    <string name="category">קטגוריה</string>
+    <string name="save">שמור</string>
+
+    <!-- Favorites -->
+    <string name="favorites">מועדפים</string>
+    <string name="no_favorites">אין מועדפים עדיין</string>
+    <string name="no_favorites_hint">לחץ על אייקון הלב על כל מוצר</string>
+    <string name="removed_from_favorites">%s הוסר מהמועדפים</string>
+    <string name="undo">בטל</string>
+
+    <!-- Settings -->
+    <string name="settings">הגדרות</string>
+    <string name="dark_mode">מצב כהה</string>
+    <string name="dark_mode_subtitle">החלף בין מצב כהה/בהיר</string>
+    <string name="language">שפה</string>
+    <string name="select_language">בחר שפה</string>
+    <string name="close">סגור</string>
+    <string name="logout">התנתקות</string>
+    <string name="logout_message">האם אתה בטוח שברצונך להתנתק?</string>
+    <string name="english">English</string>
+    <string name="hebrew">עברית</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_products">מוצרים</string>
+    <string name="nav_favorites">מועדפים</string>
+    <string name="nav_settings">הגדרות</string>
+</resources>

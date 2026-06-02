@@ -10,14 +10,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class AuthUiState(
-    val username: String = "",
-    val password: String = "",
-    val isLoading: Boolean = false,
-    val isLoggedIn: Boolean = false,
-    val error: String? = null
-)
-
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
@@ -29,7 +21,7 @@ class AuthViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             authRepository.isLoggedIn().collect { loggedIn ->
-                _uiState.update { it.copy(isLoggedIn = loggedIn) }
+                _uiState.update { it.copy(isLoggedIn = loggedIn, isChecked = true) }
             }
         }
     }
@@ -64,6 +56,15 @@ class AuthViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             authRepository.logout()
+        }
+    }
+
+    fun onBiometricSuccess() {
+        viewModelScope.launch {
+            authRepository.loginWithBiometric()
+                .onSuccess {
+                    _uiState.update { it.copy(isLoggedIn = true) }
+                }
         }
     }
 }

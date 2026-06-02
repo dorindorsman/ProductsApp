@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.productsapp.R
 import com.example.productsapp.ui.common.clickableWithRipple
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,13 +25,9 @@ fun SettingsScreen(
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(uiState) {
-        // dark mode and language changes handled in MainActivity
-    }
-
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Settings") })
+            TopAppBar(title = { Text(stringResource(R.string.settings)) })
         }
     ) { padding ->
         Column(
@@ -37,10 +35,9 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Dark mode
             ListItem(
-                headlineContent = { Text("Dark Mode") },
-                supportingContent = { Text("Toggle dark/light theme") },
+                headlineContent = { Text(stringResource(R.string.dark_mode)) },
+                supportingContent = { Text(stringResource(R.string.dark_mode_subtitle)) },
                 leadingContent = {
                     Icon(Icons.Default.DarkMode, contentDescription = null)
                 },
@@ -54,11 +51,15 @@ fun SettingsScreen(
 
             HorizontalDivider()
 
-            // Language
             ListItem(
-                headlineContent = { Text("Language") },
+                headlineContent = { Text(stringResource(R.string.language)) },
                 supportingContent = {
-                    Text(if (uiState.language == "en") "English" else "עברית")
+                    Text(
+                        if (uiState.language == "en")
+                            stringResource(R.string.english)
+                        else
+                            stringResource(R.string.hebrew)
+                    )
                 },
                 leadingContent = {
                     Icon(Icons.Default.Language, contentDescription = null)
@@ -70,11 +71,10 @@ fun SettingsScreen(
 
             HorizontalDivider()
 
-            // Logout
             ListItem(
                 headlineContent = {
                     Text(
-                        "Logout",
+                        stringResource(R.string.logout),
                         color = MaterialTheme.colorScheme.error
                     )
                 },
@@ -92,14 +92,16 @@ fun SettingsScreen(
         }
     }
 
-    // Language dialog
     if (showLanguageDialog) {
         AlertDialog(
             onDismissRequest = { showLanguageDialog = false },
-            title = { Text("Select Language") },
+            title = { Text(stringResource(R.string.select_language)) },
             text = {
                 Column {
-                    listOf("en" to "English", "he" to "עברית").forEach { (code, label) ->
+                    listOf(
+                        "en" to stringResource(R.string.english),
+                        "he" to stringResource(R.string.hebrew)
+                    ).forEach { (code, label) ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
@@ -119,18 +121,17 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showLanguageDialog = false }) {
-                    Text("Close")
+                    Text(stringResource(R.string.close))
                 }
             }
         )
     }
 
-    // Logout dialog
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
-            title = { Text("Logout") },
-            text = { Text("Are you sure you want to logout?") },
+            title = { Text(stringResource(R.string.logout)) },
+            text = { Text(stringResource(R.string.logout_message)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -141,11 +142,11 @@ fun SettingsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text("Logout") }
+                ) { Text(stringResource(R.string.logout)) }
             },
             dismissButton = {
                 TextButton(onClick = { showLogoutDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

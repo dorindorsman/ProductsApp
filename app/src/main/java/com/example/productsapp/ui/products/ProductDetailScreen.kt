@@ -14,9 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.productsapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,12 +35,12 @@ fun ProductDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Product Details") },
+                title = { Text(stringResource(R.string.product_details)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -48,17 +50,23 @@ fun ProductDetailScreen(
                             Icon(
                                 imageVector = if (it.isFavorite)
                                     Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                                contentDescription = "Toggle favorite",
+                                contentDescription = stringResource(R.string.toggle_favorite),
                                 tint = if (it.isFavorite)
                                     MaterialTheme.colorScheme.error
                                 else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                         IconButton(onClick = { showEditDialog = true }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit")
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.edit)
+                            )
                         }
                         IconButton(onClick = { showDeleteDialog = true }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.delete)
+                            )
                         }
                     }
                 }
@@ -127,10 +135,10 @@ fun ProductDetailScreen(
                             label = { Text(product.category) }
                         )
 
-                        product.brand?.let {
+                        product.brand?.let { brand ->
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Brand: $it",
+                                text = stringResource(R.string.brand, brand),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -139,7 +147,7 @@ fun ProductDetailScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
-                            text = "Description",
+                            text = stringResource(R.string.description),
                             style = MaterialTheme.typography.titleMedium
                         )
                         Spacer(modifier = Modifier.height(4.dp))
@@ -151,7 +159,7 @@ fun ProductDetailScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
-                            text = "Stock: ${product.stock} units",
+                            text = stringResource(R.string.stock, product.stock),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (product.stock > 10)
                                 MaterialTheme.colorScheme.primary
@@ -162,7 +170,7 @@ fun ProductDetailScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                             SuggestionChip(
                                 onClick = {},
-                                label = { Text("Locally modified") }
+                                label = { Text(stringResource(R.string.locally_modified)) }
                             )
                         }
                     }
@@ -171,23 +179,24 @@ fun ProductDetailScreen(
         }
     }
 
-    // Edit dialog
     if (showEditDialog) {
         uiState.product?.let { product ->
             AddEditProductDialog(
                 product = product,
                 onDismiss = { showEditDialog = false },
-                onSave = { /* TODO: wire to ProductsViewModel */ showEditDialog = false }
+                onSave = { updatedProduct ->
+                    viewModel.updateProduct(updatedProduct)
+                    showEditDialog = false
+                }
             )
         }
     }
 
-    // Delete confirmation
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Product") },
-            text = { Text("Are you sure you want to delete this product?") },
+            title = { Text(stringResource(R.string.delete_product)) },
+            text = { Text(stringResource(R.string.delete_product_message)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -198,11 +207,11 @@ fun ProductDetailScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text("Delete") }
+                ) { Text(stringResource(R.string.delete)) }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )

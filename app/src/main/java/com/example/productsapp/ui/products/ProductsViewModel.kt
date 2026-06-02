@@ -13,19 +13,21 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class ProductsUiState(
-    val isLoading: Boolean = false,
-    val error: String? = null,
-    val sortBy: String = "default",
-    val showAddEditDialog: Boolean = false,
-    val editingProduct: Product? = null
-)
-
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val repository: ProductRepository
 ) : ViewModel() {
+
+    private val _selectedCategory = MutableStateFlow<String?>(null)
+    val selectedCategory = _selectedCategory.asStateFlow()
+
+    val categories: StateFlow<List<String>> = repository.getCategories()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     private val _uiState = MutableStateFlow(ProductsUiState())
     val uiState = _uiState.asStateFlow()
@@ -35,12 +37,16 @@ class ProductsViewModel @Inject constructor(
 
     private val _sortBy = MutableStateFlow("default")
 
-    val products: Flow<PagingData<Product>> = combine(_searchQuery, _sortBy) { query, sort ->
-        Pair(query, sort)
+    private val _refreshTrigger = MutableStateFlow(0)
+
+    val products: Flow<PagingData<Product>> = combine(
+        _searchQuery, _sortBy, _selectedCategory, _refreshTrigger
+    ) { query, sort, category, _ ->
+        Triple(query, sort, category)
     }
         .debounce(300)
-        .flatMapLatest { (query, sort) ->
-            repository.getProducts(query, sort)
+        .flatMapLatest { (query, sort, category) ->
+            repository.getProducts(query, sort, category)
         }
         .cachedIn(viewModelScope)
 
@@ -75,18 +81,25 @@ class ProductsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.addOrUpdateProduct(product)
             hideDialog()
+            _refreshTrigger.value++
         }
     }
 
     fun deleteProduct(productId: Int) {
         viewModelScope.launch {
             repository.deleteProduct(productId)
+            _refreshTrigger.value++
         }
     }
 
     fun resetLocalChanges() {
         viewModelScope.launch {
             repository.resetLocalChanges()
+            _refreshTrigger.value++
         }
+    }
+
+    fun onCategorySelected(category: String?) {
+        _selectedCategory.value = category
     }
 }

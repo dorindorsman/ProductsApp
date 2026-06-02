@@ -1,8 +1,10 @@
 package com.example.productsapp.data.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.productsapp.data.local.ProductDao
 import com.example.productsapp.data.local.toDomain
 import com.example.productsapp.data.local.toEntity
@@ -13,22 +15,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+
+@OptIn(ExperimentalPagingApi::class)
 class ProductRepositoryImpl @Inject constructor(
     private val api: ProductApi,
     private val dao: ProductDao
 ) : ProductRepository {
 
-    override fun getProducts(query: String, sortBy: String): Flow<PagingData<Product>> {
+    override fun getProducts(query: String, sortBy: String, category: String?): Flow<PagingData<Product>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 prefetchDistance = 5,
                 enablePlaceholders = false
             ),
+            remoteMediator = ProductsRemoteMediator(api, dao),
             pagingSourceFactory = {
-                ProductsPagingSource(api, dao, query, sortBy)
+                dao.getProductsPaged(query, sortBy, category)
             }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.map { it.toDomain() }
+        }
     }
 
     override fun getFavorites(): Flow<List<Product>> {
@@ -47,11 +54,16 @@ class ProductRepositoryImpl @Inject constructor(
         dao.deleteLocalProduct(id)
     }
 
-    override suspend fun resetLocalChanges() {
-        dao.clearRemoteProducts()
-    }
-
     override suspend fun toggleFavorite(productId: Int) {
         dao.toggleFavorite(productId)
+    }
+
+    override fun getCategories(): Flow<List<String>> {
+        return dao.getCategories()
+    }
+
+    override suspend fun resetLocalChanges() {
+        dao.clearAllFavorites()
+        dao.clearLocalProducts()
     }
 }

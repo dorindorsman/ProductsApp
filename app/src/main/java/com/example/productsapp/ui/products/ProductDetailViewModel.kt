@@ -54,6 +54,13 @@ class ProductDetailViewModel @Inject constructor(
         }
     }
 
+    fun updateProduct(product: Product) {
+        viewModelScope.launch {
+            repository.addOrUpdateProduct(product)
+            loadProduct()
+        }
+    }
+
     fun deleteProduct() {
         viewModelScope.launch {
             _uiState.value.product?.let {

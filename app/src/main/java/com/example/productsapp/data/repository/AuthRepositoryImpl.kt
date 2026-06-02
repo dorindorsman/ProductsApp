@@ -33,6 +33,17 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout() {
-        dataStore.edit { it[IS_LOGGED_IN] = false }
+        dataStore.edit { prefs ->
+            prefs[IS_LOGGED_IN] = false
+        }
+    }
+
+    override suspend fun loginWithBiometric(): Result<Unit> {
+        return try {
+            dataStore.edit { it[IS_LOGGED_IN] = true }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

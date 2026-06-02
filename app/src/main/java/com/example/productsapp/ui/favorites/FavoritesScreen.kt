@@ -7,8 +7,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.productsapp.R
 import com.example.productsapp.ui.products.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,11 +23,14 @@ fun FavoritesScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    val removedFromFavoritesText = stringResource(R.string.removed_from_favorites, uiState.recentlyRemoved?.title ?: "")
+    val undoText = stringResource(R.string.undo)
+
     LaunchedEffect(uiState.recentlyRemoved) {
-        uiState.recentlyRemoved?.let { product ->
+        uiState.recentlyRemoved?.let {
             val result = snackbarHostState.showSnackbar(
-                message = "${product.title} removed from favorites",
-                actionLabel = "Undo",
+                message = removedFromFavoritesText,
+                actionLabel = undoText,
                 duration = SnackbarDuration.Short
             )
             if (result == SnackbarResult.ActionPerformed) {
@@ -38,7 +43,7 @@ fun FavoritesScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Favorites") })
+            TopAppBar(title = { Text(stringResource(R.string.favorites)) })
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
@@ -51,12 +56,12 @@ fun FavoritesScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "No favorites yet",
+                        text = stringResource(R.string.no_favorites),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Tap the heart icon on any product",
+                        text = stringResource(R.string.no_favorites_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
