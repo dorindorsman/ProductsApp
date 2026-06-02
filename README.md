@@ -137,6 +137,7 @@ app/
 - Generating initial Room entity and DAO boilerplate
 - Setting up the `libs.versions.toml` version catalog structure
 - Looking up correct method signatures for Paging 3 APIs
+- Hebrew localization and string resources
 
 ### What Was Implemented and Reviewed Manually
 - Overall architecture design — layer separation, feature-based packaging, and dependency direction
@@ -147,7 +148,6 @@ app/
 - Dark mode and language switching via DataStore and `recreate()`
 - Splash screen and persistent session logic
 - All bug fixes: favorites persistence, edit/delete behavior, auto-login loop, duplicate products
-- Hebrew localization and string resources
 - Unit test design and implementation
 - Manual review and adaptation of all AI-generated snippets before use
 
